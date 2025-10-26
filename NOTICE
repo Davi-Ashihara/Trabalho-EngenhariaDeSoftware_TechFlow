@@ -21,19 +21,20 @@ limitations under the License.
 Additional Information
 ------------------------------------------------------------
 
-Author: Davi Kazussuke Pontes Ashihara  
-Institution: UniFECAF – instituição do grupo FEDERAL EDUCACIONAL LTDA.  
-CNPJ: 17.238.945/0001-49  
-Contact: davi.ashihara@a.fecaf.com.br  
-Repository: (https://github.com/Davi-Ashihara/Trabalho-EngenhariaDeSoftware_TechFlow)
-
 ------------------------------------------------------------
-This project includes software developed by
-The Apache Software Foundation (http://www.apache.org/).
+Author: Davi Kazussuke Pontes Ashihara
+Institution: UniFECAF – instituição do grupo FEDERAL EDUCACIONAL LTDA.
+CNPJ: 17.238.945/0001-49
+Contact: davi.ashihara@a.fecaf.com.br
+Repository: https://github.com/Davi-Ashihara/Trabalho-EngenhariaDeSoftware_TechFlow
 ------------------------------------------------------------
-This project includes third party software developed by
-**SQLite JDBC Driver**.
-Dev: xerial
-Github Repository: [https://github.com/xerial/sqlite-jdbc](https://github.com/xerial/sqlite-jdbc)
-License: Apache License 2.0
 
+This project includes software developed by:
+- The Apache Software Foundation (http://www.apache.org/)
+
+Third-party software used in this project:
+- SQLite JDBC Driver
+  Developer: xerial
+  Repository: https://github.com/xerial/sqlite-jdbc
+  License: Apache License 2.0 (compatible)
+------------------------------------------------------------
