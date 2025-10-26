@@ -58,12 +58,17 @@ Stakeholders/cliente: transparência sobre status do projeto e priorização de 
 
 ## 🗂️ Estrutura do Repositório
 
+## 🗂️ Estrutura do Repositório
+
 Trabalho-EngenhariaDeSoftware_TechFlow/
-├── LICENSE # Licença Apache 2.0 (texto oficial, inalterado)
-├── NOTICE # Informações de autoria e vínculo acadêmico
-├── README.md # Este arquivo
+├── LICENSE        # Licença Apache 2.0 (texto oficial, inalterado)
+├── NOTICE         # Informações de autoria e vínculo acadêmico
+├── README.md      # Este arquivo
 └── src/
     └── br/
         └── com/
             └── fecaf/
-              └── fecaf/
+                ├── model/        # Classes de entidade e dados
+                ├── view/         # Interfaces do usuário (console, GUI)
+                ├── controller/   # Lógica de negócio e fluxo
+                └── util/         # Funções utilitárias
