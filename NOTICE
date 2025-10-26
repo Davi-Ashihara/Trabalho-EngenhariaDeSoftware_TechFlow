@@ -31,3 +31,9 @@ Repository: (https://github.com/Davi-Ashihara/Trabalho-EngenhariaDeSoftware_Tech
 This project includes software developed by
 The Apache Software Foundation (http://www.apache.org/).
 ------------------------------------------------------------
+This project includes third party software developed by
+**SQLite JDBC Driver**.
+Dev: xerial
+Github Repository: [https://github.com/xerial/sqlite-jdbc](https://github.com/xerial/sqlite-jdbc)
+License: Apache License 2.0
+
