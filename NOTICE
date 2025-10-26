@@ -1,9 +1,10 @@
-Copyright 2025 Davi Kazussuke Pontes Ashihara
+==========================================================================
+                      TaskFlow Project NOTICE File
+             Copyright 2025 Davi Kazussuke Pontes Ashihara.
+===========================================================================
 
-Developed as part of academic coursework at:
-UniFECAF – instituição do grupo FEDERAL EDUCACIONAL LTDA.
-CNPJ: 17.238.945/0001-49
-Certificada como Centro Universitário UniFECAF.
+This product includes software developed by Davi Kazussuke Pontes Ashihara
+as part of academic coursework at UniFECAF.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,24 +18,31 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-------------------------------------------------------------
-Additional Information
-------------------------------------------------------------
+---------------------------------------------------------------------------
+I. Third-Party Software Included in This Product
+---------------------------------------------------------------------------
 
-------------------------------------------------------------
-Author: Davi Kazussuke Pontes Ashihara
+This software includes the following third-party components, which are used
+under the terms of their respective licenses. The full text of the Apache
+License 2.0 can be found in the LICENSE file at the root of this project.
+
+  A. SQLite JDBC Driver
+     ----------------------------------------------------------------------
+     This product includes the SQLite JDBC Driver for database connectivity.
+     Copyright 2007, Taro L. Saito.
+
+     Developer:  xerial
+     Repository: https://github.com/xerial/sqlite-jdbc
+     License:    Apache License 2.0
+
+---------------------------------------------------------------------------
+II. Project and Author Information
+---------------------------------------------------------------------------
+Project:     TaskFlow - Gestor de Tarefas Desktop
+Author:      Davi Kazussuke Pontes Ashihara
+Contact:     davi.ashihara@a.fecaf.com.br
+Repository:  https://github.com/Davi-Ashihara/Trabalho-EngenhariaDeSoftware_TechFlow
+
 Institution: UniFECAF – instituição do grupo FEDERAL EDUCACIONAL LTDA.
-CNPJ: 17.238.945/0001-49
-Contact: davi.ashihara@a.fecaf.com.br
-Repository: https://github.com/Davi-Ashihara/Trabalho-EngenhariaDeSoftware_TechFlow
-------------------------------------------------------------
-
-This project includes software developed by:
-- The Apache Software Foundation (http://www.apache.org/)
-
-Third-party software used in this project:
-- SQLite JDBC Driver
-  Developer: xerial
-  Repository: https://github.com/xerial/sqlite-jdbc
-  License: Apache License 2.0 (compatible)
-------------------------------------------------------------
+             (CNPJ: 17.238.945/0001-49)
+===========================================================================
