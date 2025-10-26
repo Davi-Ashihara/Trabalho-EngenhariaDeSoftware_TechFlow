@@ -58,8 +58,6 @@ Stakeholders/cliente: transparência sobre status do projeto e priorização de 
 
 ## 🗂️ Estrutura do Repositório
 
-## 🗂️ Estrutura do Repositório
-
 Trabalho-EngenhariaDeSoftware_TechFlow/
 ├── build/              # Binários compilados (gerado pelo Ant)
 ├── dist/               # JAR final ou distribuição (gerado pelo Ant)
