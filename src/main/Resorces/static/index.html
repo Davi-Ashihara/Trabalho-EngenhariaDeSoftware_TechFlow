@@ -5,21 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechFlow - Painel de Tarefas</title>
     <style>
+        /* Estilos Gerais */
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #222; color: #eee; margin: 2rem; }
-        h1 { color: #4e9af1; }
+        h1, h2 { color: #4e9af1; border-bottom: 2px solid #444; padding-bottom: 5px; }
+
+        /* Estilos do Formulário Principal */
+        #add-task-form { margin-bottom: 2rem; }
+        #task-title-input { padding: 10px; border-radius: 4px; border: 1px solid #555; background: #444; color: #eee; min-width: 300px; }
+        #add-button { padding: 10px 15px; background: #4e9af1; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        #add-button:hover { background: #3a75bb; }
+
+        /* Estilos da Lista de Tarefas */
         ul { list-style: none; padding: 0; }
-        li { background: #333; padding: 10px; margin-bottom: 8px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
-        input { padding: 8px; border-radius: 4px; border: 1px solid #555; background: #444; color: #eee; }
-        button { padding: 8px 12px; background: #4e9af1; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #3a75bb; }
+        
+        li { 
+            background: #333; 
+            padding: 15px; 
+            margin-bottom: 12px; 
+            border-radius: 5px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Alinha no topo */
+            gap: 15px;
+            border: 1px solid transparent; 
+            transition: border-color 0.2s ease-in-out;
+        }
+        
+        /* Destaca o item inteiro ao passar o rato */
+        li:hover {
+            border-color: #4e9af1; 
+        }
+
+        .task-content { flex-grow: 1; } /* Conteúdo (título, obs) ocupa o espaço */
+        .task-content h3 { margin: 0 0 10px 0; }
+        
+        /* ======================================================= */
+        /* MUDANÇA 1: ESTILO DA OBSERVAÇÃO (MODO DE LEITURA)     */
+        /* ======================================================= */
+        .task-obs-input {
+            width: 100%;
+            box-sizing: border-box;
+            font-style: italic;
+            transition: all 0.2s ease;
+        }
+
+        /* Quando está em MODO LEITURA (readonly) */
+        .task-obs-input[readonly] {
+            padding: 5px 0 5px 2px;
+            background: none;
+            color: #ccc;
+            border: 1px solid transparent; /* Borda invisível */
+            cursor: default; /* Rato normal, não de texto */
+        }
+        .task-obs-input[readonly]::placeholder {
+            color: #666;
+        }
+        
+        /* Quando está em MODO EDIÇÃO (sem readonly) */
+        .task-obs-input:not([readonly]) {
+            padding: 5px;
+            background: #444;
+            color: #eee;
+            font-style: normal;
+            border: 1px solid #4e9af1;
+            outline: none;
+        }
+
+        /* ======================================================= */
+        /* MUDANÇA 2: ESTILO DAS "TAGS" DE STATUS                */
+        /* ======================================================= */
+        .task-status {
+            min-width: 120px; /* Largura para a tag */
+            text-align: center;
+        }
+        .status-tag {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none; /* Impede de selecionar o texto da tag */
+        }
+
+        /* Cores das Tags */
+        .status-tag[data-status="A Fazer"] {
+            background: #666; color: #eee;
+        }
+        .status-tag[data-status="A Fazer"]:hover {
+            background: #777;
+        }
+        
+        .status-tag[data-status="Em Andamento"] {
+            background: #3a75bb; color: white;
+        }
+        .status-tag[data-status="Em Andamento"]:hover {
+            background: #4e9af1;
+        }
+
+        .status-tag[data-status="Concluída"] {
+            background: #2a8a4c; color: white;
+        }
+        .status-tag[data-status="Concluída"]:hover {
+            background: #36b062;
+        }
+
+        /* ======================================================= */
+        /* MUDANÇA 3: AÇÕES (BOTÕES)                             */
+        /* ======================================================= */
+        .task-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 100px; /* Largura dos botões */
+            
+            /* Escondido por padrão */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out, visibility 0.2s;
+        }
+        
+        /* Quando o rato passa por cima do LI, mostra os botões */
+        li:hover .task-actions {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .action-btn { background: #666; color: white; border: none; padding: 6px 10px; border-radius: 3px; cursor: pointer; width: 100%; }
+        .action-btn:hover { background: #777; }
+        
+        .delete-btn { background: #c13e3e; }
+        .delete-btn:hover { background: #a03232; }
     </style>
 </head>
 <body>
 
-    <h1>Painel de Tarefas</h1>
-    
+    <h1>Meu Painel de Tarefas</h1>
+
     <div id="add-task-form">
-        <input type="text" id="task-title" placeholder="O que precisa ser feito?"/>
+        <input type="text" id="task-title-input" placeholder="O que precisa ser feito?"/>
         <button id="add-button">Adicionar Tarefa</button>
     </div>
 
@@ -28,55 +152,187 @@
         </ul>
 
     <script>
-        //url do backend
         const API_URL = 'http://localhost:8080/api/tasks';
 
-        // Carregar tarefas do backend
+         
+        // FUNÇÃO PRINCIPAL: Carregar tarefas do backend
         async function loadTasks() {
-            // Chamar o seu endpoint GET /api/tasks
             const response = await fetch(API_URL);
-            const tasks = await response.json(); // Converte o '[]' em dados
+            const tasks = await response.json(); 
 
             const taskListElement = document.getElementById('task-list');
-            taskListElement.innerHTML = ''; // Limpa a lista antes de adicionar
+            taskListElement.innerHTML = ''; // Limpa a lista
 
-            // Criar um item na lista (li) para cada tarefa
             tasks.forEach(task => {
                 const li = document.createElement('li');
-                li.textContent = `${task.title} (Status: ${task.status})`;
+                // Adicionamos um ID a cada <li> para poder removê-lo facilmente
+                li.id = `task-item-${task.id}`;
+
+                li.innerHTML = `
+                    <div class="task-content">
+                        <h3>${task.title}</h3>
+                        <input type="text" class="task-obs-input" id="obs-input-${task.id}" value="${task.observation || ''}" readonly placeholder="Adicionar observação...">
+                    </div>
+                    
+                    <div class="task-status">
+                        <span class="status-tag" data-id="${task.id}" data-status="${task.status}">
+                            ${task.status}
+                        </span>
+                    </div>
+
+                    <div class="task-actions">
+                        <button class="action-btn edit-save-obs-btn" data-id="${task.id}" data-mode="edit">Editar Obs.</button>
+                        <button class="action-btn delete-btn" data-id="${task.id}">Apagar</button>
+                    </div>
+                `;
                 taskListElement.appendChild(li);
             });
         }
 
-        // Criar uma nova tarefa
+         
+        // FUNÇÃO: Criar uma nova tarefa (POST)
+         
         async function createTask() {
-            const titleInput = document.getElementById('task-title');
+            const titleInput = document.getElementById('task-title-input');
             const newTitle = titleInput.value;
 
-            if (!newTitle) { // Não faz nada se o título estiver vazio
+            if (!newTitle) {
                 alert("Por favor, digite um título.");
                 return;
             }
 
-            // Chamar o seu endpoint POST /api/tasks
             await fetch(API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title: newTitle }) // Envia { "title": "..." }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: newTitle })
             });
 
-            // Recarregar a lista e limpar o input
-            titleInput.value = ''; // Limpa o campo
-            loadTasks(); // Atualiza a lista com a nova tarefa
+            titleInput.value = '';
+            loadTasks(); // Recarrega a lista inteira após criar
         }
 
-        // Quando a página carregar, chame a função loadTasks()
-        document.addEventListener('DOMContentLoaded', loadTasks);
+         
+        // FUNÇÃO: Apagar uma tarefa (DELETE)
+         
+        async function deleteTask(id) {
+            if (!confirm("Tem certeza que deseja apagar esta tarefa?")) {
+                return;
+            }
 
-        // Quando o botão "Adicionar" for clicado, chame a função createTask()
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // MUDANÇA: Remove apenas o item do HTML, sem recarregar tudo
+                document.getElementById(`task-item-${id}`).remove();
+            } else {
+                alert("Erro ao apagar a tarefa.");
+            }
+        }
+
+        // FUNÇÃO: Atualizar o Status (PUT)
+        async function updateStatus(id, newStatus) {
+            const response = await fetch(`${API_URL}/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            });
+            
+            if (!response.ok) {
+                alert("Erro ao atualizar o status.");
+            }
+        }
+        
+        // (NOVO) FUNÇÃO: "Ciclar" o status
+        async function cycleStatus(id, currentStatus, targetElement) {
+            // Define a ordem do ciclo
+            const statusCycle = {
+                "A Fazer": "Em Andamento",
+                "Em Andamento": "Concluída",
+                "Concluída": "A Fazer"
+            };
+            const newStatus = statusCycle[currentStatus];
+
+            // 1. Atualiza o backend
+            await updateStatus(id, newStatus);
+            
+            // 2. Atualiza o HTML (a "tag") DIRETAMENTE, sem recarregar
+            targetElement.textContent = newStatus;
+            targetElement.dataset.status = newStatus;
+        }
+
+        // (MODIFICADO) FUNÇÃO: Atualizar a Observação (PUT)
+        async function updateObservation(id) {
+            const obsInput = document.getElementById(`obs-input-${id}`);
+            const newObservation = obsInput.value;
+
+            const response = await fetch(`${API_URL}/${id}/observation`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ observation: newObservation })
+            });
+
+            if (!response.ok) {
+                alert("Erro ao salvar observação.");
+                return false; // Indica falha
+            }
+            return true; // Indica sucesso
+        }
+
+
+         
+        //[EVENT LISTENERS]
+         
+        
+        // 1. Ligar o botão "Adicionar"
         document.getElementById('add-button').addEventListener('click', createTask);
+
+        // 2. Ouvinte de cliques na LISTA inteira (para Status, Editar, Salvar, Apagar)
+        const taskList = document.getElementById('task-list');
+
+        taskList.addEventListener('click', async (event) => {
+            const target = event.target; // O elemento exato que foi clicado
+            const id = target.dataset.id; // Pega o 'data-id' do elemento
+
+            //   Ação: Clicou na TAG DE STATUS
+            if (target.classList.contains('status-tag')) {
+                const currentStatus = target.dataset.status;
+                await cycleStatus(id, currentStatus, target); // Passa o próprio elemento
+            }
+
+            //   Ação: Clicou no botão APAGAR
+            if (target.classList.contains('delete-btn')) {
+                await deleteTask(id);
+            }
+
+            //   Ação: Clicou no botão EDITAR/SALVAR OBS
+            if (target.classList.contains('edit-save-obs-btn')) {
+                const input = document.getElementById(`obs-input-${id}`);
+                const mode = target.dataset.mode;
+
+                if (mode === 'edit') {
+                    // MUDAR PARA MODO "SALVAR"
+                    input.removeAttribute('readonly'); // Permite edição
+                    input.focus(); // Foca o cursor no input
+                    target.textContent = 'Salvar'; // Muda texto do botão
+                    target.dataset.mode = 'save'; // Muda o modo do botão
+                } 
+                else { // mode === 'save'
+                    // MUDAR PARA MODO "EDITAR"
+                    const success = await updateObservation(id); // Salva no backend
+                    
+                    if (success) {
+                        input.setAttribute('readonly', true); // Bloqueia edição
+                        target.textContent = 'Editar Obs.'; // Muda texto do botão
+                        target.dataset.mode = 'edit'; // Muda o modo do botão
+                    }
+                }
+            }
+        });
+
+        // 3. Carregar tudo quando a página abrir
+        document.addEventListener('DOMContentLoaded', loadTasks);
 
     </script>
 </body>
