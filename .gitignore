@@ -5,6 +5,10 @@
 /build/
 /dist/
 
+# Ficheiros de configuração do NetBeans
+/nbproject/
+
 # Configurações privadas de IDE
 /nbproject/private/
 *.user
+*.vscode
