@@ -1,0 +1,10 @@
+# Pasta de build do Maven
+/target/
+
+# Ficheiros de build antigos do NetBeans
+/build/
+/dist/
+
+# Configurações privadas de IDE
+/nbproject/private/
+*.user
