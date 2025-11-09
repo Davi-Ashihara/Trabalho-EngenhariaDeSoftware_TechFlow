@@ -1,3 +1,21 @@
+<!--
+Copyright 2025 Davi Kazussuke Pontes Ashihara
+Developed as part of academic coursework at UniFECAF –
+instituição do grupo FEDERAL EDUCACIONAL LTDA (CNPJ: 17.238.945/0001-49),
+certificada como Centro Universitário UniFECAF.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -39,9 +57,7 @@
         .task-content { flex-grow: 1; } /* Conteúdo (título, obs) ocupa o espaço */
         .task-content h3 { margin: 0 0 10px 0; }
         
-        /* ======================================================= */
         /* MUDANÇA 1: ESTILO DA OBSERVAÇÃO (MODO DE LEITURA)     */
-        /* ======================================================= */
         .task-obs-input {
             width: 100%;
             box-sizing: border-box;
@@ -71,9 +87,7 @@
             outline: none;
         }
 
-        /* ======================================================= */
-        /* MUDANÇA 2: ESTILO DAS "TAGS" DE STATUS                */
-        /* ======================================================= */
+        /* MUDANÇA 2: ESTILO DAS "TAGS" DE STATUS*/
         .task-status {
             min-width: 120px; /* Largura para a tag */
             text-align: center;
@@ -110,9 +124,7 @@
             background: #36b062;
         }
 
-        /* ======================================================= */
-        /* MUDANÇA 3: AÇÕES (BOTÕES)                             */
-        /* ======================================================= */
+        /* MUDANÇA 3: AÇÕES (BOTÕES)*/
         .task-actions {
             display: flex;
             flex-direction: column;
@@ -152,6 +164,7 @@
         </ul>
 
     <script>
+        // URL base da API
         const API_URL = 'http://localhost:8080/api/tasks';
 
          
@@ -165,7 +178,7 @@
 
             tasks.forEach(task => {
                 const li = document.createElement('li');
-                // Adicionamos um ID a cada <li> para poder removê-lo facilmente
+                // Adicionamos um ID único para cada item
                 li.id = `task-item-${task.id}`;
 
                 li.innerHTML = `
@@ -244,7 +257,7 @@
             }
         }
         
-        // (NOVO) FUNÇÃO: "Ciclar" o status
+        // FUNÇÃO: "Ciclar" o status
         async function cycleStatus(id, currentStatus, targetElement) {
             // Define a ordem do ciclo
             const statusCycle = {
@@ -262,7 +275,7 @@
             targetElement.dataset.status = newStatus;
         }
 
-        // (MODIFICADO) FUNÇÃO: Atualizar a Observação (PUT)
+        // FUNÇÃO: Atualizar a Observação (PUT)
         async function updateObservation(id) {
             const obsInput = document.getElementById(`obs-input-${id}`);
             const newObservation = obsInput.value;
@@ -279,11 +292,8 @@
             }
             return true; // Indica sucesso
         }
-
-
          
         //[EVENT LISTENERS]
-         
         
         // 1. Ligar o botão "Adicionar"
         document.getElementById('add-button').addEventListener('click', createTask);
